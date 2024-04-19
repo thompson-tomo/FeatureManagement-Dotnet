@@ -133,7 +133,7 @@ namespace Microsoft.FeatureManagement
 
                 //
                 // Underlying IConfigurationSection data is dynamic so latest feature definitions are returned
-                yield return  _definitions.GetOrAdd(featureName, (_) => ReadFeatureDefinition(featureSection));
+                yield return _definitions.GetOrAdd(featureName, (_) => ReadFeatureDefinition(featureSection));
             }
         }
 
@@ -374,8 +374,8 @@ namespace Microsoft.FeatureManagement
                     .FirstOrDefault(section =>
                         string.Equals(
                             section.Key,
-                            _microsoftFeatureManagementSchemaEnabled ? 
-                                MicrosoftFeatureManagementFields.FeatureManagementSectionName : 
+                            _microsoftFeatureManagementSchemaEnabled ?
+                                MicrosoftFeatureManagementFields.FeatureManagementSectionName :
                                 ConfigurationFields.FeatureManagementSectionName,
                             StringComparison.OrdinalIgnoreCase));
 

@@ -55,7 +55,7 @@ namespace Microsoft.FeatureManagement
             services.AddScoped<IFeatureManagerSnapshot, FeatureManagerSnapshot>();
 
             var builder = new FeatureManagementBuilder(services);
-            
+
             //
             // Add built-in feature filters
             builder.AddFeatureFilter<PercentageFilter>();
