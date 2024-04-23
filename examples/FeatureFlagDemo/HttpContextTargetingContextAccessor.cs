@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 //
-using Microsoft.AspNetCore.Http;
 using Microsoft.FeatureManagement.FeatureFilters;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace FeatureFlagDemo
 {
@@ -25,18 +21,27 @@ namespace FeatureFlagDemo
 
         public ValueTask<TargetingContext> GetContextAsync()
         {
-            HttpContext httpContext = _httpContextAccessor.HttpContext;
+            HttpContext? httpContext = _httpContextAccessor.HttpContext;
+
+            if (httpContext == null)
+            {
+                return new ValueTask<TargetingContext>(new TargetingContext());
+            }
 
             //
             // Try cache lookup
-            if (httpContext.Items.TryGetValue(TargetingContextLookup, out object value))
+            if (httpContext.Items.TryGetValue(TargetingContextLookup, out object? value) && value != null)
             {
-                return new ValueTask<TargetingContext>((TargetingContext)value);
+                TargetingContext? cachedContext = value as TargetingContext;
+
+                if (cachedContext != null) {
+                    return new ValueTask<TargetingContext>(cachedContext);
+                }
             }
 
             ClaimsPrincipal user = httpContext.User;
 
-            List<string> groups = new List<string>();
+            List<string> groups = new();
 
             //
             // This application expects groups to be specified in the user's claims
@@ -52,7 +57,7 @@ namespace FeatureFlagDemo
             // Build targeting context based off user info
             TargetingContext targetingContext = new TargetingContext
             {
-                UserId = user.Identity.Name,
+                UserId = user.Identity?.Name,
                 Groups = groups
             };
 

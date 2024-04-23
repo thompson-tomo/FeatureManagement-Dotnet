@@ -38,10 +38,7 @@ using (ServiceProvider serviceProvider = services.BuildServiceProvider())
         //
         // Check if feature enabled
         //
-        var accountServiceContext = new AccountServiceContext
-        {
-            AccountId = account
-        };
+        var accountServiceContext = new AccountServiceContext(account);
 
         bool enabled = await featureManager.IsEnabledAsync(FeatureName, accountServiceContext);
 

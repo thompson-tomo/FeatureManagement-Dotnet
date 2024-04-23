@@ -4,4 +4,9 @@
 class AccountServiceContext : IAccountContext
 {
     public string AccountId { get; set; }
+
+    public AccountServiceContext(string accountId)
+    {
+        AccountId = accountId;
+    }
 }

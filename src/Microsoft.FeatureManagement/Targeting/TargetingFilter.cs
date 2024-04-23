@@ -17,7 +17,7 @@ namespace Microsoft.FeatureManagement.FeatureFilters
     {
         private const string Alias = "Microsoft.Targeting";
         private readonly ITargetingContextAccessor _contextAccessor;
-        private readonly IContextualFeatureFilter<ITargetingContext> _contextualFilter;
+        private readonly ContextualTargetingFilter _contextualFilter;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -36,11 +36,11 @@ namespace Microsoft.FeatureManagement.FeatureFilters
         /// <summary>
         /// Binds configuration representing filter parameters to <see cref="TargetingFilterSettings"/>.
         /// </summary>
-        /// <param name="filterParameters">The configuration representing filter parameters that should be bound to <see cref="TargetingFilterSettings"/>.</param>
+        /// <param name="parameters">The configuration representing filter parameters that should be bound to <see cref="TargetingFilterSettings"/>.</param>
         /// <returns><see cref="TargetingFilterSettings"/> that can later be used in targeting.</returns>
-        public object BindParameters(IConfiguration filterParameters)
+        public object BindParameters(IConfiguration parameters)
         {
-            return filterParameters.Get<TargetingFilterSettings>() ?? new TargetingFilterSettings();
+            return parameters.Get<TargetingFilterSettings>() ?? new TargetingFilterSettings();
         }
 
         /// <summary>

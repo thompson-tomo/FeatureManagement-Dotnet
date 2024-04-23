@@ -1,12 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 //
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.FeatureManagement;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FeatureFlagDemo.FeatureManagement.FeatureFilters
 {
@@ -41,12 +36,12 @@ namespace FeatureFlagDemo.FeatureManagement.FeatureFilters
 
         private bool IsChrome()
         {
-            string userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
+            string? userAgent = _httpContextAccessor.HttpContext?.Request.Headers["User-Agent"];
 
             return userAgent != null && userAgent.Contains("Chrome", StringComparison.OrdinalIgnoreCase) && !userAgent.Contains("edge", StringComparison.OrdinalIgnoreCase);
         }
 
-        private bool IsEdge()
+        private static bool IsEdge()
         {
             // Return true if current request is sent from Edge browser
 

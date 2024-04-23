@@ -42,6 +42,8 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\XMLComments\$(MSBuildProjectName).xml</DocumentationFile>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">

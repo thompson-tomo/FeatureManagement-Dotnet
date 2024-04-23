@@ -22,20 +22,14 @@ namespace Microsoft.FeatureManagement
         /// <returns></returns>
         public static IApplicationBuilder UseForFeature(this IApplicationBuilder app, string featureName, Action<IApplicationBuilder> configuration)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
 
             if (string.IsNullOrEmpty(featureName))
             {
                 throw new ArgumentNullException(nameof(featureName));
             }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
 
             //
             // Create and configure the branch builder right away; otherwise,
@@ -77,10 +71,7 @@ namespace Microsoft.FeatureManagement
         /// <returns></returns>
         public static IApplicationBuilder UseMiddlewareForFeature<T>(this IApplicationBuilder app, string featureName)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
 
             if (string.IsNullOrEmpty(featureName))
             {

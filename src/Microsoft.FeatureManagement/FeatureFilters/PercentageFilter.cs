@@ -30,11 +30,11 @@ namespace Microsoft.FeatureManagement.FeatureFilters
         /// <summary>
         /// Binds configuration representing filter parameters to <see cref="PercentageFilterSettings"/>.
         /// </summary>
-        /// <param name="filterParameters">The configuration representing filter parameters that should be bound to <see cref="PercentageFilterSettings"/>.</param>
+        /// <param name="parameters">The configuration representing filter parameters that should be bound to <see cref="PercentageFilterSettings"/>.</param>
         /// <returns><see cref="PercentageFilterSettings"/> that can later be used in feature evaluation.</returns>
-        public object BindParameters(IConfiguration filterParameters)
+        public object BindParameters(IConfiguration parameters)
         {
-            return filterParameters.Get<PercentageFilterSettings>() ?? new PercentageFilterSettings();
+            return parameters.Get<PercentageFilterSettings>() ?? new PercentageFilterSettings();
         }
 
         /// <summary>

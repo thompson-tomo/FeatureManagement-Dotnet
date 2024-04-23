@@ -35,10 +35,7 @@ namespace Microsoft.FeatureManagement
         /// <returns>The feature management builder.</returns>
         public static IFeatureManagementBuilder UseDisabledFeaturesHandler(this IFeatureManagementBuilder builder, Action<IEnumerable<string>, ActionExecutingContext> handler)
         {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
+            ArgumentNullException.ThrowIfNull(handler);
 
             builder.UseDisabledFeaturesHandler(new InlineDisabledFeaturesHandler(handler));
 

@@ -25,7 +25,7 @@ namespace Microsoft.FeatureManagement
         private readonly IConfiguration _configuration;
         private readonly ConcurrentDictionary<string, FeatureDefinition> _definitions;
         private IDisposable _changeSubscription;
-        private int _stale = 0;
+        private int _stale;
         private readonly bool _microsoftFeatureManagementSchemaEnabled;
 
         /// <summary>

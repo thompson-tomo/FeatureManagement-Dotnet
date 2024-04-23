@@ -8,6 +8,7 @@ namespace Microsoft.FeatureManagement
     /// <summary>
     /// Allows the name of an <see cref="IFeatureFilter"/> to be customized to relate to the name specified in configuration.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class FilterAliasAttribute : Attribute
     {
         /// <summary>

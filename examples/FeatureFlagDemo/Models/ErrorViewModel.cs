@@ -10,5 +10,10 @@ namespace FeatureFlagDemo.Models
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public ErrorViewModel(string requestId)
+        {
+            RequestId = requestId ?? throw new ArgumentNullException(nameof(requestId));
+        }
     }
 }

@@ -17,6 +17,9 @@ insert_final_newline = true
 
 #### .NET Coding Conventions ####
 
+# Ignored analyzer rules
+dotnet_diagnostic.CA1725.severity = none # Interface implementations should use same parameter names
+
 # Organize usings
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = false

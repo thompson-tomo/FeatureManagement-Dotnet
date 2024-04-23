@@ -40,25 +40,25 @@ namespace Microsoft.FeatureManagement.FeatureFilters
         /// <summary>
         /// Binds configuration representing filter parameters to <see cref="TargetingFilterSettings"/>.
         /// </summary>
-        /// <param name="filterParameters">The configuration representing filter parameters that should be bound to <see cref="TargetingFilterSettings"/>.</param>
+        /// <param name="parameters">The configuration representing filter parameters that should be bound to <see cref="TargetingFilterSettings"/>.</param>
         /// <returns><see cref="TargetingFilterSettings"/> that can later be used in targeting.</returns>
-        public object BindParameters(IConfiguration filterParameters)
+        public object BindParameters(IConfiguration parameters)
         {
-            return filterParameters.Get<TargetingFilterSettings>() ?? new TargetingFilterSettings();
+            return parameters.Get<TargetingFilterSettings>() ?? new TargetingFilterSettings();
         }
 
         /// <summary>
         /// Performs a targeting evaluation using the provided <see cref="TargetingContext"/> to determine if a feature should be enabled.
         /// </summary>
-        /// <param name="context">The feature evaluation context.</param>
+        /// <param name="featureFilterContext">The feature evaluation context.</param>
         /// <param name="targetingContext">The targeting context to use during targeting evaluation.</param>
-        /// <exception cref="ArgumentNullException">Thrown if either <paramref name="context"/> or <paramref name="targetingContext"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if either <paramref name="featureFilterContext"/> or <paramref name="targetingContext"/> is null.</exception>
         /// <returns>True if the feature is enabled, false otherwise.</returns>
-        public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context, ITargetingContext targetingContext)
+        public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext featureFilterContext, ITargetingContext targetingContext)
         {
-            if (context == null)
+            if (featureFilterContext == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(featureFilterContext));
             }
 
             if (targetingContext == null)
@@ -68,7 +68,7 @@ namespace Microsoft.FeatureManagement.FeatureFilters
 
             //
             // Check if prebound settings available, otherwise bind from parameters.
-            TargetingFilterSettings settings = (TargetingFilterSettings)context.Settings ?? (TargetingFilterSettings)BindParameters(context.Parameters);
+            TargetingFilterSettings settings = (TargetingFilterSettings)featureFilterContext.Settings ?? (TargetingFilterSettings)BindParameters(featureFilterContext.Parameters);
 
             if (!TryValidateSettings(settings, out string paramName, out string message))
             {
@@ -116,7 +116,7 @@ namespace Microsoft.FeatureManagement.FeatureFilters
 
                     if (groupRollout != null)
                     {
-                        string audienceContextId = $"{targetingContext.UserId}\n{context.FeatureName}\n{group}";
+                        string audienceContextId = $"{targetingContext.UserId}\n{featureFilterContext.FeatureName}\n{group}";
 
                         if (IsTargeted(audienceContextId, groupRollout.RolloutPercentage))
                         {
@@ -128,7 +128,7 @@ namespace Microsoft.FeatureManagement.FeatureFilters
 
             //
             // Check if the user is being targeted by a default rollout percentage
-            string defaultContextId = $"{targetingContext.UserId}\n{context.FeatureName}";
+            string defaultContextId = $"{targetingContext.UserId}\n{featureFilterContext.FeatureName}";
 
             return Task.FromResult(IsTargeted(defaultContextId, settings.Audience.DefaultRolloutPercentage));
         }
@@ -140,7 +140,7 @@ namespace Microsoft.FeatureManagement.FeatureFilters
         /// <param name="contextId">A context identifier that determines what the percentage is applicable for</param>
         /// <param name="percentage">The total percentage of possible context identifiers that should be targeted</param>
         /// <returns>A boolean representing if the context identifier should be targeted</returns>
-        private bool IsTargeted(string contextId, double percentage)
+        private static bool IsTargeted(string contextId, double percentage)
         {
             //
             // Handle edge case of exact 100 bucket
@@ -173,7 +173,7 @@ namespace Microsoft.FeatureManagement.FeatureFilters
         /// <param name="paramName">The name of the invalid setting, if any.</param>
         /// <param name="reason">The reason that the setting is invalid.</param>
         /// <returns>True if the provided settings are valid. False if the provided settings are invalid.</returns>
-        private bool TryValidateSettings(TargetingFilterSettings settings, out string paramName, out string reason)
+        private static bool TryValidateSettings(TargetingFilterSettings settings, out string paramName, out string reason)
         {
             const string OutOfRange = "The value is out of the accepted range.";
 

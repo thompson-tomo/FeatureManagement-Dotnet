@@ -35,7 +35,7 @@ namespace Microsoft.FeatureManagement
         }
 
         /// <summary>
-        /// Creates a feature manager.
+        /// Initializes a new instance of the <see cref="FeatureManager"/> class.
         /// </summary>
         /// <param name="featureDefinitionProvider">The provider of feature flag definitions.</param>
         /// <param name="options">Options controlling the behavior of the feature manager.</param>
@@ -104,11 +104,11 @@ namespace Microsoft.FeatureManagement
         /// Checks whether a given feature is enabled.
         /// </summary>
         /// <param name="feature">The name of the feature to check.</param>
-        /// <param name="appContext">A context providing information that can be used to evaluate whether a feature should be on or off.</param>
+        /// <param name="context">A context providing information that can be used to evaluate whether a feature should be on or off.</param>
         /// <returns>True if the feature is enabled, otherwise false.</returns>
-        public Task<bool> IsEnabledAsync<TContext>(string feature, TContext appContext)
+        public Task<bool> IsEnabledAsync<TContext>(string feature, TContext context)
         {
-            return IsEnabledAsync(feature, appContext, true);
+            return IsEnabledAsync(feature, context, true);
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace Microsoft.FeatureManagement
             return filter;
         }
 
-        private bool IsMatchingName(Type filterType, string filterName)
+        private static bool IsMatchingName(Type filterType, string filterName)
         {
             const string filterSuffix = "filter";
 
